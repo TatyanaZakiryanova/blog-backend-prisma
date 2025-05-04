@@ -43,6 +43,10 @@ export const getAll = async (_req: Request, res: Response, next: NextFunction) =
         title: true,
         text: true,
         tags: true,
+        viewsCount: true,
+        commentsCount: true,
+        createdAt: true,
+        updatedAt: true,
         imageUrl: true,
         user: {
           select: {
@@ -71,6 +75,10 @@ export const getOne = async (req: Request<{ id: string }>, res: Response, next: 
         title: true,
         text: true,
         tags: true,
+        viewsCount: true,
+        commentsCount: true,
+        createdAt: true,
+        updatedAt: true,
         imageUrl: true,
         user: {
           select: {
@@ -125,6 +133,10 @@ export const update = async (
         title: true,
         text: true,
         tags: true,
+        viewsCount: true,
+        commentsCount: true,
+        createdAt: true,
+        updatedAt: true,
         imageUrl: true,
         user: {
           select: {
@@ -172,6 +184,27 @@ export const remove = async (req: Request<{ id: string }>, res: Response, next: 
 
     res.json({
       message: 'Post deleted successfully',
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getLastTags = async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const posts = await prisma.post.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 5,
+      select: {
+        tags: true,
+      },
+    });
+
+    const tags = [...new Set(posts.flatMap((post) => post.tags))].slice(0, 5);
+
+    res.json({
+      message: 'Last tags fetched successfully',
+      data: tags,
     });
   } catch (err) {
     next(err);
