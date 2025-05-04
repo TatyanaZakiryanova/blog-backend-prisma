@@ -11,5 +11,6 @@ router.get('/', postController.getAll);
 router.get('/:id', postController.getOne);
 router.post('/', checkAuth, validate(createPostSchema), postController.create);
 router.patch('/:id', checkAuth, validate(updatePostSchema), postController.update);
+router.delete('/:id', checkAuth, postController.remove);
 
 export default router;

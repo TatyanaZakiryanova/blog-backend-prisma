@@ -1,10 +1,9 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import prisma from '../prisma';
 import { CreatePostDto, UpdatePostDto } from '../dtos';
 import { AuthRequest } from '../types';
 import { AppError } from '../utils/AppError';
-import { nextTick } from 'process';
 
 export const create = async (
   req: Request<{}, {}, CreatePostDto>,
@@ -140,6 +139,39 @@ export const update = async (
     res.json({
       message: 'Post updated successfully',
       data: updatedPost,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const remove = async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const userId = (req as AuthRequest).userId;
+
+    const post = await prisma.post.findUnique({
+      where: { id: Number(id) },
+      select: {
+        id: true,
+        user: { select: { id: true } },
+      },
+    });
+
+    if (!post) {
+      throw new AppError('Post not found', 404);
+    }
+
+    if (post.user.id !== userId) {
+      throw new AppError('Access denied', 403);
+    }
+
+    await prisma.post.delete({
+      where: { id: Number(id) },
+    });
+
+    res.json({
+      message: 'Post deleted successfully',
     });
   } catch (err) {
     next(err);
