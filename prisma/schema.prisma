@@ -18,20 +18,34 @@ model User {
   updatedAt   DateTime @updatedAt
 
   posts    Post[]  
+
+  comments Comment[]
 }
 
 model Post {
   id            Int       @id @default(autoincrement())
   title         String
   text          String
-  tags          String[]  // массив строк
+  tags          String[]  
   viewsCount    Int       @default(0)
   commentsCount Int       @default(0)
-  imageUrl      String?   // optional
+  imageUrl      String?   
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-
   userId        Int
+  
   user          User      @relation(fields: [userId], references: [id])
+  
+  comments Comment[]
 }
 
+model Comment {
+  id        Int      @id @default(autoincrement())
+  text      String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

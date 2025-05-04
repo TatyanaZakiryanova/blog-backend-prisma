@@ -3,9 +3,11 @@ import dotenv from 'dotenv';
 
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
-import { errorHandler } from './middlewares/error.middleware';
 import postRoutes from './routes/post.routes';
 import tagsRoutes from './routes/tags.routes';
+import commentRoutes from './routes/comment.routes';
+
+import { errorHandler } from './middlewares/error.middleware';
 
 dotenv.config();
 
@@ -16,6 +18,7 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/posts', postRoutes);
+app.use('/comments', commentRoutes);
 app.use(tagsRoutes);
 
 app.use(errorHandler);

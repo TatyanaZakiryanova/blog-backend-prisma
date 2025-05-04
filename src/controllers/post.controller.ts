@@ -68,6 +68,15 @@ export const getOne = async (req: Request<{ id: string }>, res: Response, next: 
   try {
     const { id } = req.params;
 
+    await prisma.post.update({
+      where: { id: Number(id) },
+      data: {
+        viewsCount: {
+          increment: 1,
+        },
+      },
+    });
+
     const post = await prisma.post.findUnique({
       where: { id: Number(id) },
       select: {
@@ -94,7 +103,7 @@ export const getOne = async (req: Request<{ id: string }>, res: Response, next: 
       throw new AppError('Post not found', 404);
     }
 
-    res.json({ message: 'User found', data: post });
+    res.json({ message: 'Post found', data: post });
   } catch (err) {
     next(err);
   }
