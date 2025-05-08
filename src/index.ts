@@ -8,6 +8,7 @@ import userRoutes from './routes/user.routes';
 import postRoutes from './routes/post.routes';
 import tagsRoutes from './routes/tags.routes';
 import commentRoutes from './routes/comment.routes';
+import uploadRoutes from './routes/upload.routes';
 
 import { errorHandler } from './middlewares/error.middleware';
 
@@ -29,6 +30,7 @@ app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/posts', postRoutes);
 app.use('/comments', commentRoutes);
+app.use(uploadRoutes);
 app.use(tagsRoutes);
 
 app.use(errorHandler);
