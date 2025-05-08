@@ -91,8 +91,7 @@ export const update = async (
     });
 
     if (!existingComment) {
-      res.status(404).json({ message: 'Comment not found' });
-      return;
+      throw new AppError('Comment not found', 404);
     }
 
     if (existingComment.userId !== userId) {
@@ -120,8 +119,7 @@ export const remove = async (req: Request<{ id: string }>, res: Response, next: 
     });
 
     if (!existingComment) {
-      res.status(404).json({ message: 'Comment not found' });
-      return;
+      throw new AppError('Comment not found', 404);
     }
 
     if (existingComment.userId !== userId) {

@@ -11,4 +11,6 @@ router.post('/register', validate(registerSchema), userController.register);
 router.post('/login', validate(loginSchema), userController.login);
 router.get('/me', checkAuth, userController.getMe);
 
+router.post('/refresh-token', userController.refreshAccessToken);
+
 export default router;

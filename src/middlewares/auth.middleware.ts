@@ -2,25 +2,21 @@ import { NextFunction, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import { AuthRequest } from '../types';
+import { AppError } from '../utils/AppError';
+import { verifyAccessToken } from '../utils/jwt';
 
 export const checkAuth = (req: AuthRequest, res: Response, next: NextFunction): void => {
   const token = (req.headers.authorization || '').replace(/Bearer\s?/, '');
 
   if (!token) {
-    res.status(401).json({
-      message: 'No token provided',
-    });
-    return;
+    throw new AppError('No token provided', 401);
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || '') as JwtPayload & { id: number };
+    const decoded = verifyAccessToken(token);
     req.userId = decoded.id;
     next();
   } catch (err) {
-    res.status(401).json({
-      message: 'Invalid token',
-    });
-    return;
+    next(new AppError('Invalid or expired token', 401));
   }
 };
