@@ -1,11 +1,10 @@
 import { NextFunction, Response } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import { AuthRequest } from '../types';
 import { AppError } from '../utils/AppError';
 import { verifyAccessToken } from '../utils/jwt';
 
-export const checkAuth = (req: AuthRequest, res: Response, next: NextFunction): void => {
+export const checkAuth = (req: AuthRequest, _res: Response, next: NextFunction): void => {
   const token = (req.headers.authorization || '').replace(/Bearer\s?/, '');
 
   if (!token) {

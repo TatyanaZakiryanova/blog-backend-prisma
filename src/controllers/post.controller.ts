@@ -24,6 +24,24 @@ export const create = async (
           connect: { id: userId },
         },
       },
+      select: {
+        id: true,
+        title: true,
+        text: true,
+        tags: true,
+        viewsCount: true,
+        commentsCount: true,
+        imageUrl: true,
+        createdAt: true,
+        updatedAt: true,
+        user: {
+          select: {
+            id: true,
+            fullName: true,
+            avatarUrl: true,
+          },
+        },
+      },
     });
 
     res.status(201).json({
@@ -45,9 +63,9 @@ export const getAll = async (_req: Request, res: Response, next: NextFunction) =
         tags: true,
         viewsCount: true,
         commentsCount: true,
+        imageUrl: true,
         createdAt: true,
         updatedAt: true,
-        imageUrl: true,
         user: {
           select: {
             id: true,
@@ -86,9 +104,9 @@ export const getOne = async (req: Request<{ id: string }>, res: Response, next: 
         tags: true,
         viewsCount: true,
         commentsCount: true,
+        imageUrl: true,
         createdAt: true,
         updatedAt: true,
-        imageUrl: true,
         user: {
           select: {
             id: true,
@@ -144,9 +162,9 @@ export const update = async (
         tags: true,
         viewsCount: true,
         commentsCount: true,
+        imageUrl: true,
         createdAt: true,
         updatedAt: true,
-        imageUrl: true,
         user: {
           select: {
             id: true,

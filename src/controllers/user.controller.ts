@@ -168,9 +168,9 @@ export const refreshAccessToken = (req: Request, res: Response, next: NextFuncti
       throw new AppError('No refresh token provided', 401);
     }
 
-    const payload = verifyRefreshToken(token); 
+    const payload = verifyRefreshToken(token);
     const newAccessToken = signAccessToken(payload.id);
-    
+
     res.json({ accessToken: newAccessToken });
   } catch (err) {
     next(new AppError('Invalid refresh token', 401));
