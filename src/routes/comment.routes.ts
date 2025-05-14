@@ -1,8 +1,8 @@
 import express from 'express';
 
-import { checkAuth } from '../middlewares/auth.middleware';
 import { commentController } from '../controllers';
 import { updateCommentSchema } from '../dtos';
+import { checkAuth } from '../middlewares/auth.middleware';
 import { validate } from '../middlewares/validate.middleware';
 
 const router = express.Router();

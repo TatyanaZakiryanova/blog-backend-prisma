@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import prisma from '../prisma';
+import { CreateCommentDto, UpdateCommentDto } from '../dtos';
 import { AuthRequest } from '../types';
 import { AppError } from '../utils/AppError';
-import { CreateCommentDto, UpdateCommentDto } from '../dtos';
 
 export const create = async (
   req: Request<{ id: string }, {}, CreateCommentDto>,
@@ -28,6 +28,15 @@ export const create = async (
         text,
         postId,
         userId,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullName: true,
+            avatarUrl: true,
+          },
+        },
       },
     });
 

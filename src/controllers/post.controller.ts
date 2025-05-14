@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import prisma from '../prisma';
 import { CreatePostDto, UpdatePostDto } from '../dtos';
+import { postService } from '../services';
 import { AuthRequest } from '../types';
 import { AppError } from '../utils/AppError';
 
@@ -11,38 +12,13 @@ export const create = async (
   next: NextFunction,
 ) => {
   try {
-    const { text, title, tags, imageUrl } = req.body;
     const userId = (req as AuthRequest).userId;
 
-    const post = await prisma.post.create({
-      data: {
-        title,
-        text,
-        tags,
-        imageUrl,
-        user: {
-          connect: { id: userId },
-        },
-      },
-      select: {
-        id: true,
-        title: true,
-        text: true,
-        tags: true,
-        viewsCount: true,
-        commentsCount: true,
-        imageUrl: true,
-        createdAt: true,
-        updatedAt: true,
-        user: {
-          select: {
-            id: true,
-            fullName: true,
-            avatarUrl: true,
-          },
-        },
-      },
-    });
+    if (!userId) {
+      throw new AppError('Unauthorized', 401);
+    }
+
+    const post = await postService.createPost(req.body, userId);
 
     res.status(201).json({
       message: 'Post created successfully',
@@ -55,26 +31,7 @@ export const create = async (
 
 export const getAll = async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    const posts = await prisma.post.findMany({
-      select: {
-        id: true,
-        title: true,
-        text: true,
-        tags: true,
-        viewsCount: true,
-        commentsCount: true,
-        imageUrl: true,
-        createdAt: true,
-        updatedAt: true,
-        user: {
-          select: {
-            id: true,
-            fullName: true,
-            avatarUrl: true,
-          },
-        },
-      },
-    });
+    const posts = await postService.getAllPosts();
 
     res.json({ message: 'List of all posts', data: posts });
   } catch (err) {
@@ -84,42 +41,9 @@ export const getAll = async (_req: Request, res: Response, next: NextFunction) =
 
 export const getOne = async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const postId = Number(req.params.id);
 
-    await prisma.post.update({
-      where: { id: Number(id) },
-      data: {
-        viewsCount: {
-          increment: 1,
-        },
-      },
-    });
-
-    const post = await prisma.post.findUnique({
-      where: { id: Number(id) },
-      select: {
-        id: true,
-        title: true,
-        text: true,
-        tags: true,
-        viewsCount: true,
-        commentsCount: true,
-        imageUrl: true,
-        createdAt: true,
-        updatedAt: true,
-        user: {
-          select: {
-            id: true,
-            fullName: true,
-            avatarUrl: true,
-          },
-        },
-      },
-    });
-
-    if (!post) {
-      throw new AppError('Post not found', 404);
-    }
+    const post = await postService.getOnePost(postId);
 
     res.json({ message: 'Post found', data: post });
   } catch (err) {
@@ -133,51 +57,18 @@ export const update = async (
   next: NextFunction,
 ) => {
   try {
-    const { id } = req.params;
+    const postId = Number(req.params.id);
     const userId = (req as AuthRequest).userId;
 
-    const post = await prisma.post.findUnique({
-      where: { id: Number(id) },
-      select: {
-        id: true,
-        user: { select: { id: true } },
-      },
-    });
-
-    if (!post) {
-      throw new AppError('Post not found', 404);
+    if (!userId) {
+      throw new AppError('Unauthorized', 401);
     }
 
-    if (post.user.id !== userId) {
-      throw new AppError('Access denied', 403);
-    }
-
-    const updatedPost = await prisma.post.update({
-      where: { id: Number(id) },
-      data: req.body,
-      select: {
-        id: true,
-        title: true,
-        text: true,
-        tags: true,
-        viewsCount: true,
-        commentsCount: true,
-        imageUrl: true,
-        createdAt: true,
-        updatedAt: true,
-        user: {
-          select: {
-            id: true,
-            fullName: true,
-            avatarUrl: true,
-          },
-        },
-      },
-    });
+    const post = await postService.updatePost(req.body, postId, userId);
 
     res.json({
       message: 'Post updated successfully',
-      data: updatedPost,
+      data: post,
     });
   } catch (err) {
     next(err);
@@ -186,28 +77,14 @@ export const update = async (
 
 export const remove = async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const postId = Number(req.params.id);
     const userId = (req as AuthRequest).userId;
 
-    const post = await prisma.post.findUnique({
-      where: { id: Number(id) },
-      select: {
-        id: true,
-        user: { select: { id: true } },
-      },
-    });
-
-    if (!post) {
-      throw new AppError('Post not found', 404);
+    if (!userId) {
+      throw new AppError('Unauthorized', 401);
     }
 
-    if (post.user.id !== userId) {
-      throw new AppError('Access denied', 403);
-    }
-
-    await prisma.post.delete({
-      where: { id: Number(id) },
-    });
+    await postService.removePost(postId, userId);
 
     res.json({
       message: 'Post deleted successfully',
@@ -219,15 +96,7 @@ export const remove = async (req: Request<{ id: string }>, res: Response, next: 
 
 export const getLastTags = async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    const posts = await prisma.post.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: 5,
-      select: {
-        tags: true,
-      },
-    });
-
-    const tags = [...new Set(posts.flatMap((post) => post.tags))].slice(0, 5);
+    const tags = await postService.getLastTagsService();
 
     res.json({
       message: 'Last tags fetched successfully',

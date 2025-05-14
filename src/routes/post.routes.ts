@@ -1,9 +1,9 @@
 import express from 'express';
 
+import { commentController, postController } from '../controllers';
+import { createCommentSchema, createPostSchema, updatePostSchema } from '../dtos';
 import { checkAuth } from '../middlewares/auth.middleware';
 import { validate } from '../middlewares/validate.middleware';
-import { createCommentSchema, createPostSchema, updatePostSchema } from '../dtos';
-import { postController, commentController } from '../controllers';
 
 const router = express.Router();
 
