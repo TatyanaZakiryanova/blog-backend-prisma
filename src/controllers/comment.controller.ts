@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 
-import prisma from '../prisma';
 import { CreateCommentDto, UpdateCommentDto } from '../dtos';
 import { AuthRequest } from '../types';
-import { AppError } from '../utils/AppError';
+import { commentService } from '../services';
 
 export const create = async (
   req: Request<{ id: string }, {}, CreateCommentDto>,
@@ -13,41 +12,7 @@ export const create = async (
   try {
     const postId = Number(req.params.id);
     const userId = Number((req as AuthRequest).userId);
-    const { text } = req.body;
-
-    const postExists = await prisma.post.findUnique({
-      where: { id: postId },
-    });
-
-    if (!postExists) {
-      throw new AppError('Post not found', 404);
-    }
-
-    const comment = await prisma.comment.create({
-      data: {
-        text,
-        postId,
-        userId,
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            fullName: true,
-            avatarUrl: true,
-          },
-        },
-      },
-    });
-
-    await prisma.post.update({
-      where: { id: postId },
-      data: {
-        commentsCount: {
-          increment: 1,
-        },
-      },
-    });
+    const comment = await commentService.createComment(req.body, postId, userId);
 
     res.status(201).json({
       message: 'Comment created successfully',
@@ -62,19 +27,7 @@ export const getAll = async (req: Request, res: Response, next: NextFunction) =>
   try {
     const postId = Number(req.params.id);
 
-    const comments = await prisma.comment.findMany({
-      where: { postId },
-      orderBy: { createdAt: 'desc' },
-      include: {
-        user: {
-          select: {
-            id: true,
-            fullName: true,
-            avatarUrl: true,
-          },
-        },
-      },
-    });
+    const comments = await commentService.getAllComments(postId);
 
     res.json({
       message: 'List of all comments',
@@ -93,26 +46,9 @@ export const update = async (
   try {
     const commentId = Number(req.params.id);
     const userId = Number((req as AuthRequest).userId);
-    const { text } = req.body;
+    const comment = await commentService.updateComment(req.body, commentId, userId);
 
-    const existingComment = await prisma.comment.findUnique({
-      where: { id: commentId },
-    });
-
-    if (!existingComment) {
-      throw new AppError('Comment not found', 404);
-    }
-
-    if (existingComment.userId !== userId) {
-      throw new AppError('Access denied', 403);
-    }
-
-    const updatedComment = await prisma.comment.update({
-      where: { id: commentId },
-      data: { text },
-    });
-
-    res.json({ message: 'Comment updated successfully', data: updatedComment });
+    res.json({ message: 'Comment updated successfully', data: comment });
   } catch (err) {
     next(err);
   }
@@ -123,30 +59,7 @@ export const remove = async (req: Request<{ id: string }>, res: Response, next: 
     const commentId = Number(req.params.id);
     const userId = Number((req as AuthRequest).userId);
 
-    const existingComment = await prisma.comment.findUnique({
-      where: { id: commentId },
-    });
-
-    if (!existingComment) {
-      throw new AppError('Comment not found', 404);
-    }
-
-    if (existingComment.userId !== userId) {
-      throw new AppError('Access denied', 403);
-    }
-
-    await prisma.comment.delete({
-      where: { id: commentId },
-    });
-
-    await prisma.post.update({
-      where: { id: existingComment.postId },
-      data: {
-        commentsCount: {
-          decrement: 1,
-        },
-      },
-    });
+    await commentService.removeComment(commentId, userId);
 
     res.json({
       message: 'Comment deleted successfully',

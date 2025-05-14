@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 
-import prisma from '../prisma';
 import { CreatePostDto, UpdatePostDto } from '../dtos';
 import { postService } from '../services';
 import { AuthRequest } from '../types';
