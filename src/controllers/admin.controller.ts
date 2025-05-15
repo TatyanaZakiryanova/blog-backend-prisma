@@ -3,6 +3,16 @@ import { NextFunction, Request, Response } from 'express';
 import { adminService } from '../services';
 import { deleteCommentService } from '../services/admin.service';
 
+export const getAll = async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const users = await adminService.getAllUsers();
+
+    res.json({ message: 'List of all users', data: users });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = Number(req.params.id);

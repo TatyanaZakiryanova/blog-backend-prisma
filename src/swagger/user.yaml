@@ -33,7 +33,7 @@ paths:
 
 components:
   schemas:
-    UserInfo: # одиночный юзер
+    UserInfo:
       type: object
       properties:
         message:
@@ -41,7 +41,7 @@ components:
         data:
           $ref: '#/components/schemas/User'
 
-    UserListResponse: # массив юзеров
+    UserListResponse:
       type: object
       properties:
         message:
@@ -51,7 +51,7 @@ components:
           items:
             $ref: '#/components/schemas/User'
 
-    User: # сам юзер
+    User:
       type: object
       required:
         - id

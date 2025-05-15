@@ -1,6 +1,22 @@
 import prisma from '../prisma';
 import { AppError } from '../utils/AppError';
 
+export const getAllUsers = async () => {
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      fullName: true,
+      email: true,
+      avatarUrl: true,
+      createdAt: true,
+      updatedAt: true,
+      role: true,
+    },
+  });
+
+  return users;
+};
+
 export const deleteUserService = async (userId: number) => {
   const user = await prisma.user.findUnique({ where: { id: userId } });
 

@@ -24,7 +24,7 @@ export const registerUser = async (dto: RegisterDto) => {
   const accessToken = signAccessToken(user.id);
   const refreshToken = signRefreshToken(user.id);
 
-  const { passwordHash, ...cleanUser } = user;
+  const { passwordHash, role, ...cleanUser } = user;
 
   return { user: cleanUser, accessToken, refreshToken };
 };
@@ -49,7 +49,7 @@ export const loginUser = async (dto: LoginDto) => {
   const accessToken = signAccessToken(user.id);
   const refreshToken = signRefreshToken(user.id);
 
-  const { passwordHash, ...cleanUser } = user;
+  const { passwordHash, role, ...cleanUser } = user;
 
   return { user: cleanUser, accessToken, refreshToken };
 };

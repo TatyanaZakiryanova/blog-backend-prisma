@@ -1,0 +1,130 @@
+paths:
+  /admin/users:
+    get:
+      tags:
+        - Admin
+      summary: Get all users
+      responses:
+        '200':
+          description: List of all users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListResponse'
+        '500':
+          description: Internal server error
+
+  /admin/users/{id}:
+    delete:
+      tags:
+        - Admin
+      summary: Delete user by ID
+      responses:
+        '200':
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: User deleted successfully
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+
+  /admin/posts/{id}:
+    delete:
+      tags:
+        - Admin
+      summary: Delete post by ID
+      responses:
+        '200':
+          description: Post deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Post deleted successfully
+        '404':
+          description: Post not found
+        '500':
+          description: Internal server error
+
+/admin/comments/{id}:
+  delete:
+    tags:
+      - Admin
+    summary: Delete comment by ID
+    responses:
+      '200':
+        description: Comment deleted successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+              example:
+                message: Comment deleted successfully
+      '404':
+        description: Comment not found
+      '500':
+        description: Internal server error
+
+components:
+  schemas:
+    UserInfo:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/User'
+
+    UserListResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+
+    User:
+      type: object
+      required:
+        - id
+        - fullName
+        - email
+        - createdAt
+        - updatedAt
+        - role
+      properties:
+        id:
+          type: string
+        fullName:
+          type: string
+        email:
+          type: string
+          format: email
+        avatarUrl:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        role:
+          type: string
