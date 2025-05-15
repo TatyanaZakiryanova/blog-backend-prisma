@@ -13,31 +13,32 @@ export const createComment = async (dto: CreateCommentDto, postId: number, userI
     throw new AppError('Post not found', 404);
   }
 
-  const comment = await prisma.comment.create({
-    data: {
-      text,
-      postId,
-      userId,
-    },
-    include: {
-      user: {
-        select: {
-          id: true,
-          fullName: true,
-          avatarUrl: true,
+  const [comment] = await prisma.$transaction([
+    prisma.comment.create({
+      data: {
+        text,
+        postId,
+        userId,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullName: true,
+            avatarUrl: true,
+          },
         },
       },
-    },
-  });
-
-  await prisma.post.update({
-    where: { id: postId },
-    data: {
-      commentsCount: {
-        increment: 1,
+    }),
+    prisma.post.update({
+      where: { id: postId },
+      data: {
+        commentsCount: {
+          increment: 1,
+        },
       },
-    },
-  });
+    }),
+  ]);
 
   return comment;
 };
@@ -96,16 +97,18 @@ export const removeComment = async (commentId: number, userId: number) => {
     throw new AppError('Access denied', 403);
   }
 
-  await prisma.comment.delete({
-    where: { id: commentId },
-  });
+  await prisma.$transaction([
+    prisma.comment.delete({
+      where: { id: commentId },
+    }),
 
-  await prisma.post.update({
-    where: { id: existingComment.postId },
-    data: {
-      commentsCount: {
-        decrement: 1,
+    prisma.post.update({
+      where: { id: existingComment.postId },
+      data: {
+        commentsCount: {
+          decrement: 1,
+        },
       },
-    },
-  });
+    }),
+  ]);
 };

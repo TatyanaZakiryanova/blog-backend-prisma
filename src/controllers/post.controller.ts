@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import { CreatePostDto, UpdatePostDto } from '../dtos';
 import { postService } from '../services';
-import { AuthRequest } from '../types';
+import { AuthRequest, GetAllQuery } from '../types';
 import { AppError } from '../utils/AppError';
 
 export const create = async (
@@ -28,9 +28,20 @@ export const create = async (
   }
 };
 
-export const getAll = async (_req: Request, res: Response, next: NextFunction) => {
+export const getAll = async (
+  req: Request<{}, {}, {}, GetAllQuery>,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
-    const posts = await postService.getAllPosts();
+    const { sort, tag, page = '1', pageSize = '10' } = req.query;
+
+    const posts = await postService.getAllPosts(
+      sort,
+      tag,
+      parseInt(page, 10),
+      parseInt(pageSize, 10),
+    );
 
     res.json({ message: 'List of all posts', data: posts });
   } catch (err) {

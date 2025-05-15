@@ -1,6 +1,7 @@
 import prisma from '../prisma';
 import { CreatePostDto, UpdatePostDto } from '../dtos';
 import { AppError } from '../utils/AppError';
+import { Prisma } from '@prisma/client';
 
 export const createPost = async (dto: CreatePostDto, userId: number) => {
   const { text, title, tags, imageUrl } = dto;
@@ -38,8 +39,22 @@ export const createPost = async (dto: CreatePostDto, userId: number) => {
   return post;
 };
 
-export const getAllPosts = async () => {
+export const getAllPosts = async (
+  sortParam?: string,
+  tagFilter?: string,
+  page = 1,
+  pageSize = 10,
+) => {
+  const sortBy: Prisma.PostOrderByWithRelationInput =
+    sortParam === 'popular' ? { viewsCount: 'desc' } : { createdAt: 'desc' };
+
+  const where: Prisma.PostWhereInput = tagFilter ? { tags: { has: tagFilter } } : {};
+
   const posts = await prisma.post.findMany({
+    where,
+    orderBy: sortBy,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
     select: {
       id: true,
       title: true,
