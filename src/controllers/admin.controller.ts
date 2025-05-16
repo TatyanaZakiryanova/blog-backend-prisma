@@ -13,6 +13,18 @@ export const getAll = async (_req: Request, res: Response, next: NextFunction) =
   }
 };
 
+export const getOne = async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
+  try {
+    const userId = Number(req.params.id);
+
+    const user = await adminService.getUserById(userId);
+
+    res.json({ message: 'User found', data: user });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = Number(req.params.id);

@@ -17,6 +17,27 @@ export const getAllUsers = async () => {
   return users;
 };
 
+export const getUserById = async (userId: number) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      fullName: true,
+      email: true,
+      avatarUrl: true,
+      createdAt: true,
+      updatedAt: true,
+      role: true,
+    },
+  });
+
+  if (!user) {
+    throw new AppError('User not found', 404);
+  }
+
+  return user;
+};
+
 export const deleteUserService = async (userId: number) => {
   const user = await prisma.user.findUnique({ where: { id: userId } });
 

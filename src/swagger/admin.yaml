@@ -10,11 +10,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserListResponse'
+                $ref: '#/components/schemas/AdminUserList'
         '500':
           description: Internal server error
 
   /admin/users/{id}:
+    get:
+      tags:
+        - Admin
+      summary: Get user by ID
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminUser'
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+
     delete:
       tags:
         - Admin
@@ -90,7 +106,7 @@ components:
         data:
           $ref: '#/components/schemas/User'
 
-    UserListResponse:
+    AdminUserList:
       type: object
       properties:
         message:
@@ -98,9 +114,9 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/User'
+            $ref: '#/components/schemas/AdminUser'
 
-    User:
+    AdminUser:
       type: object
       required:
         - id
@@ -111,7 +127,7 @@ components:
         - role
       properties:
         id:
-          type: string
+          type: integer
         fullName:
           type: string
         email:

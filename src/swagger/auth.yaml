@@ -64,6 +64,26 @@ paths:
         '500':
           description: Internal server error
 
+  /auth/refresh-token:
+    get:
+      tags:
+        - Auth
+      summary: Refresh access token using refresh token cookie
+      responses:
+        '200':
+          description: New access token issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+        '401':
+          description: No refresh token provided
+        '500':
+          description: Internal server error
+
 components:
   schemas:
     LoginInput:
@@ -146,7 +166,7 @@ components:
             - updatedAt
           properties:
             id:
-              type: string
+              type: integer
             fullName:
               type: string
             email:

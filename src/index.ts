@@ -6,13 +6,13 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerConfig from './config/swagger.config';
 
+import adminRoutes from './routes/admin.routes';
 import authRoutes from './routes/auth.routes';
+import userRoutes from './routes/user.routes';
 import commentRoutes from './routes/comment.routes';
 import postRoutes from './routes/post.routes';
 import tagsRoutes from './routes/tags.routes';
 import uploadRoutes from './routes/upload.routes';
-import userRoutes from './routes/user.routes';
-import adminRoutes from './routes/admin.routes';
 import { errorHandler } from './middlewares/error.middleware';
 
 dotenv.config();
@@ -31,11 +31,11 @@ app.use(
   }),
 );
 
+app.use('/admin', adminRoutes);
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/posts', postRoutes);
 app.use('/comments', commentRoutes);
-app.use('/admin', adminRoutes);
 app.use(uploadRoutes);
 app.use(tagsRoutes);
 

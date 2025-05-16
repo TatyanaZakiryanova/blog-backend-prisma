@@ -1,8 +1,8 @@
-import { Router } from 'express';
+import express from 'express';
 
 import { userController } from '../controllers';
 
-const router = Router();
+const router = express.Router();
 
 router.get('/', userController.getAll);
 router.get('/:id', userController.getOne);
