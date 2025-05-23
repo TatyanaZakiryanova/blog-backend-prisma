@@ -17,6 +17,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Validation failed
         '401':
           description: Incorrect login or password
         '500':
@@ -40,6 +42,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Validation failed
+        '409':
+          description: User already exists
         '500':
           description: Internal server error
 
@@ -56,19 +62,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserInfo'
+                $ref: '#/components/schemas/UserInfoResponse'
         '401':
-          description: Unauthorized
+          description: Unauthorized (token missing or invalid)
         '404':
           description: User not found
         '500':
           description: Internal server error
 
   /auth/refresh-token:
-    get:
+    post:
       tags:
         - Auth
       summary: Refresh access token using refresh token cookie
+      security:
+        - cookieAuth: []
       responses:
         '200':
           description: New access token issued
@@ -79,6 +87,8 @@ paths:
                 properties:
                   accessToken:
                     type: string
+                    description: New JWT access token
+                    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
         '401':
           description: No refresh token provided
         '500':
@@ -116,6 +126,8 @@ components:
           type: string
         avatarUrl:
           type: string
+          nullable: true
+          example: null
 
     AuthResponse:
       type: object
@@ -142,6 +154,7 @@ components:
             avatarUrl:
               type: string
               nullable: true
+              example: null
             createdAt:
               type: string
               format: date-time
@@ -151,11 +164,12 @@ components:
             accessToken:
               type: string
 
-    UserInfo:
+    UserInfoResponse:
       type: object
       properties:
         message:
           type: string
+          example: User data retrieved successfully
         data:
           type: object
           required:
@@ -175,9 +189,20 @@ components:
             avatarUrl:
               type: string
               nullable: true
+              example: null
             createdAt:
               type: string
               format: date-time
             updatedAt:
               type: string
               format: date-time
+
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: refreshToken
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

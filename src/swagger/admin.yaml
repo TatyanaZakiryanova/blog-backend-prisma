@@ -4,13 +4,21 @@ paths:
       tags:
         - Admin
       summary: Get all users
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: List of all users
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AdminUserList'
+                $ref: '#/components/schemas/AdminUserListResponse'
+        '401':
+          description: Unauthorized (token missing or invalid)
+        '403':
+          description: Insufficient role
+        '404':
+          description: User not found
         '500':
           description: Internal server error
 
@@ -19,13 +27,26 @@ paths:
       tags:
         - Admin
       summary: Get user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 25
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: User found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AdminUser'
+                $ref: '#/components/schemas/AdminUserResponse'
+        '401':
+          description: Unauthorized (token missing or invalid)
+        '403':
+          description: Insufficient role
         '404':
           description: User not found
         '500':
@@ -35,6 +56,15 @@ paths:
       tags:
         - Admin
       summary: Delete user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 25
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: User deleted successfully
@@ -47,6 +77,10 @@ paths:
                     type: string
                 example:
                   message: User deleted successfully
+        '401':
+          description: Unauthorized (token missing or invalid)
+        '403':
+          description: Insufficient role
         '404':
           description: User not found
         '500':
@@ -57,6 +91,15 @@ paths:
       tags:
         - Admin
       summary: Delete post by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 25
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Post deleted successfully
@@ -69,48 +112,73 @@ paths:
                     type: string
                 example:
                   message: Post deleted successfully
+        '401':
+          description: Unauthorized (token missing or invalid)
+        '403':
+          description: Insufficient role
         '404':
           description: Post not found
         '500':
           description: Internal server error
 
-/admin/comments/{id}:
-  delete:
-    tags:
-      - Admin
-    summary: Delete comment by ID
-    responses:
-      '200':
-        description: Comment deleted successfully
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-              example:
-                message: Comment deleted successfully
-      '404':
-        description: Comment not found
-      '500':
-        description: Internal server error
+  /admin/comments/{id}:
+    delete:
+      tags:
+        - Admin
+      summary: Delete comment by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 25
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Comment deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Comment deleted successfully
+        '401':
+          description: Unauthorized (token missing or invalid)
+        '403':
+          description: Insufficient role
+        '404':
+          description: Comment not found
+        '500':
+          description: Internal server error
 
 components:
   schemas:
-    UserInfo:
+    AdminUserResponse:
       type: object
+      required:
+        - message
+        - data
       properties:
         message:
           type: string
+          example: User found
         data:
-          $ref: '#/components/schemas/User'
+          $ref: '#/components/schemas/AdminUser'
 
-    AdminUserList:
+    AdminUserListResponse:
       type: object
+      required:
+        - message
+        - data
       properties:
         message:
           type: string
+          example: List of all users
         data:
           type: array
           items:
@@ -128,14 +196,18 @@ components:
       properties:
         id:
           type: integer
+          example: 25
         fullName:
           type: string
+          example: Admin
         email:
           type: string
           format: email
+          example: admin@example.com
         avatarUrl:
           type: string
           nullable: true
+          example: null
         createdAt:
           type: string
           format: date-time
@@ -144,3 +216,12 @@ components:
           format: date-time
         role:
           type: string
+          enum:
+            - USER
+            - ADMIN
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

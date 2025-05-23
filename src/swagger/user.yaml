@@ -19,33 +19,48 @@ paths:
       tags:
         - Users
       summary: Get user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 25
       responses:
         '200':
           description: User found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserInfo'
-        '400':
-          description: Invalid user ID
+                $ref: '#/components/schemas/UserResponse'
+        '404':
+          description: User not found
         '500':
           description: Internal server error
 
 components:
   schemas:
-    UserInfo:
+    UserResponse:
       type: object
+      required:
+        - message
+        - data
       properties:
         message:
           type: string
+          example: User found
         data:
           $ref: '#/components/schemas/User'
 
     UserListResponse:
       type: object
+      required:
+        - message
+        - data
       properties:
         message:
           type: string
+          example: List of all users
         data:
           type: array
           items:
@@ -70,6 +85,7 @@ components:
         avatarUrl:
           type: string
           nullable: true
+          example: null
         createdAt:
           type: string
           format: date-time

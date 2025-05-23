@@ -11,7 +11,7 @@ export const registerUser = async (dto: RegisterDto) => {
   const existingUser = await prisma.user.findUnique({ where: { email } });
 
   if (existingUser) {
-    throw new Error('User already exists');
+    throw new AppError('User already exists', 409);
   }
 
   const salt = await bcrypt.genSalt(10);
