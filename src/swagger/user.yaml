@@ -26,6 +26,7 @@ paths:
           schema:
             type: integer
             example: 25
+          description: User ID
       responses:
         '200':
           description: User found
@@ -77,11 +78,14 @@ components:
       properties:
         id:
           type: integer
+          example: 25
         fullName:
           type: string
+          example: John Doe
         email:
           type: string
           format: email
+          example: user@example.com
         avatarUrl:
           type: string
           nullable: true

@@ -105,9 +105,11 @@ components:
         email:
           type: string
           format: email
+          example: user@example.com
         password:
           type: string
           format: password
+          example: password123
 
     RegisterInput:
       type: object
@@ -119,11 +121,14 @@ components:
         email:
           type: string
           format: email
+          example: user@example.com
         password:
           type: string
           format: password
+          example: password123
         fullName:
           type: string
+          example: John Doe
         avatarUrl:
           type: string
           nullable: true
@@ -146,11 +151,14 @@ components:
           properties:
             id:
               type: integer
+              example: 25
             fullName:
               type: string
+              example: John Doe
             email:
               type: string
               format: email
+              example: user@example.com
             avatarUrl:
               type: string
               nullable: true
@@ -163,6 +171,7 @@ components:
               format: date-time
             accessToken:
               type: string
+              example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
 
     UserInfoResponse:
       type: object
@@ -181,11 +190,14 @@ components:
           properties:
             id:
               type: integer
+              example: 25
             fullName:
               type: string
+              example: John Doe
             email:
               type: string
               format: email
+              example: user@example.com
             avatarUrl:
               type: string
               nullable: true

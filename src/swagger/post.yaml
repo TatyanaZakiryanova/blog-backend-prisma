@@ -75,7 +75,8 @@ paths:
           name: id
           required: true
           schema:
-            type: string
+            type: integer
+            example: 25
           description: Post ID
       responses:
         '200':
@@ -100,7 +101,8 @@ paths:
           name: id
           required: true
           schema:
-            type: string
+            type: integer
+            example: 25
           description: Post ID
       requestBody:
         required: true
@@ -137,7 +139,8 @@ paths:
           name: id
           required: true
           schema:
-            type: string
+            type: integer
+            example: 25
           description: Post ID
       responses:
         '200':
@@ -170,7 +173,9 @@ paths:
           name: postId
           required: true
           schema:
-            type: string
+            type: integer
+            example: 25
+          description: Post ID
       responses:
         '200':
           description: List of comments for the post
@@ -187,6 +192,14 @@ paths:
       summary: Create a new comment on a post
       security:
         - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 25
+          description: Post ID
       requestBody:
         required: true
         content:
@@ -220,15 +233,17 @@ components:
       properties:
         title:
           type: string
-          example: Header
+          example: Post title
         text:
           type: string
-          example: Hello world
+          example: Post text
         tags:
           type: array
           items:
             type: string
-          example: [react]
+          example:
+            - backend
+            - node
         imageUrl:
           type: string
           nullable: true
@@ -278,15 +293,17 @@ components:
           example: 25
         title:
           type: string
-          example: Header
+          example: Post title
         text:
           type: string
-          example: Hello world
+          example: Post text
         tags:
           type: array
           items:
             type: string
-          example: [react]
+          example:
+            - backend
+            - node
         viewsCount:
           type: integer
         commentsCount:
@@ -309,7 +326,7 @@ components:
               example: 25
             fullName:
               type: string
-              example: Admin
+              example: John Doe
             avatarUrl:
               type: string
               nullable: true
@@ -322,7 +339,7 @@ components:
       properties:
         text:
           type: string
-          example: My comment
+          example: New comment
 
     CommentListResponse:
       type: object
@@ -366,7 +383,7 @@ components:
           example: 20
         text:
           type: string
-          example: My comment
+          example: New comment
         postId:
           type: integer
           example: 5
@@ -387,7 +404,7 @@ components:
               example: 25
             fullName:
               type: string
-              example: Admin
+              example: John Doe
             avatarUrl:
               type: string
               nullable: true
