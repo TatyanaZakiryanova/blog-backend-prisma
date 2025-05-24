@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
 export const createCommentSchema = z.object({
-  text: z.string().min(1),
+  text: z.string().trim().min(1).max(1000),
 });
 
 export type CreateCommentDto = z.infer<typeof createCommentSchema>;
 
 export const updateCommentSchema = z.object({
-  text: z.string().min(1).optional(),
+  text: z.string().trim().min(1).max(1000).optional(),
 });
 
 export type UpdateCommentDto = z.infer<typeof updateCommentSchema>;
