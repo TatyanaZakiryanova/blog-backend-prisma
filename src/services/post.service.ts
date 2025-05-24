@@ -79,15 +79,6 @@ export const getAllPosts = async (
 };
 
 export const getOnePost = async (postId: number) => {
-  await prisma.post.update({
-    where: { id: postId },
-    data: {
-      viewsCount: {
-        increment: 1,
-      },
-    },
-  });
-
   const post = await prisma.post.findUnique({
     where: { id: postId },
     select: {
@@ -113,6 +104,15 @@ export const getOnePost = async (postId: number) => {
   if (!post) {
     throw new AppError('Post not found', 404);
   }
+
+  await prisma.post.update({
+    where: { id: postId },
+    data: {
+      viewsCount: {
+        increment: 1,
+      },
+    },
+  });
 
   return post;
 };

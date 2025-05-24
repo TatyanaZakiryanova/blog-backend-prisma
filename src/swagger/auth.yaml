@@ -136,6 +136,9 @@ components:
 
     AuthResponse:
       type: object
+      required:
+        - message
+        - data
       properties:
         message:
           type: string
@@ -166,15 +169,20 @@ components:
             createdAt:
               type: string
               format: date-time
+              example: 2025-05-24T03:28:03.020Z
             updatedAt:
               type: string
               format: date-time
+              example: 2025-05-24T03:28:03.020Z
             accessToken:
               type: string
               example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
 
     UserInfoResponse:
       type: object
+      required:
+        - message
+        - data
       properties:
         message:
           type: string
@@ -205,9 +213,11 @@ components:
             createdAt:
               type: string
               format: date-time
+              example: 2025-05-24T03:28:03.020Z
             updatedAt:
               type: string
               format: date-time
+              example: 2025-05-24T03:28:03.020Z
 
   securitySchemes:
     cookieAuth:

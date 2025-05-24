@@ -30,26 +30,10 @@ paths:
                     example: https://example.com/uploads/image.jpg
         '400':
           description: Bad request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: 'No file uploaded'
         '401':
           description: Unauthorized (token missing or invalid)
         '500':
           description: Internal server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: 'Internal server error'
 
 components:
   securitySchemes:

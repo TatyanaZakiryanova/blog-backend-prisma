@@ -215,9 +215,11 @@ components:
         createdAt:
           type: string
           format: date-time
+          example: 2025-05-24T03:28:03.020Z
         updatedAt:
           type: string
           format: date-time
+          example: 2025-05-24T03:28:03.020Z
         role:
           type: string
           enum:
