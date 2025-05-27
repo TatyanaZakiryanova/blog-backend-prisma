@@ -14,13 +14,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/AdminUserListResponse'
         '401':
-          description: Unauthorized (token missing or invalid)
+          $ref: '#/components/responses/UnauthorizedError'
         '403':
-          description: Insufficient role
+          $ref: '#/components/responses/ForbiddenError'
         '404':
-          description: User not found
+          $ref: '#/components/responses/NotFoundError'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
   /admin/users/{id}:
     get:
@@ -45,13 +45,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/AdminUserResponse'
         '401':
-          description: Unauthorized (token missing or invalid)
+          $ref: '#/components/responses/UnauthorizedError'
         '403':
-          description: Insufficient role
+          $ref: '#/components/responses/ForbiddenError'
         '404':
-          description: User not found
+          $ref: '#/components/responses/NotFoundError'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
     delete:
       tags:
@@ -80,13 +80,13 @@ paths:
                 example:
                   message: User deleted successfully
         '401':
-          description: Unauthorized (token missing or invalid)
+          $ref: '#/components/responses/UnauthorizedError'
         '403':
-          description: Insufficient role
+          $ref: '#/components/responses/ForbiddenError'
         '404':
-          description: User not found
+          $ref: '#/components/responses/NotFoundError'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
   /admin/posts/{id}:
     delete:
@@ -116,13 +116,13 @@ paths:
                 example:
                   message: Post deleted successfully
         '401':
-          description: Unauthorized (token missing or invalid)
+          $ref: '#/components/responses/UnauthorizedError'
         '403':
-          description: Insufficient role
+          $ref: '#/components/responses/ForbiddenError'
         '404':
-          description: Post not found
+          $ref: '#/components/responses/NotFoundError'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
   /admin/comments/{id}:
     delete:
@@ -152,13 +152,13 @@ paths:
                 example:
                   message: Comment deleted successfully
         '401':
-          description: Unauthorized (token missing or invalid)
+          $ref: '#/components/responses/UnauthorizedError'
         '403':
-          description: Insufficient role
+          $ref: '#/components/responses/ForbiddenError'
         '404':
-          description: Comment not found
+          $ref: '#/components/responses/NotFoundError'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
 components:
   schemas:
@@ -227,8 +227,53 @@ components:
             - ADMIN
           example: ADMIN
 
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
+  responses:
+    UnauthorizedError:
+      description: Unauthorized (token missing or invalid)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: No token provided
+
+    ForbiddenError:
+      description: 'Forbidden: insufficient role'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: 'Forbidden: insufficient role'
+
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: Resource not found
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: Internal server error
