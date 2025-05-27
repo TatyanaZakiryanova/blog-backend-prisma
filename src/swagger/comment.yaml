@@ -28,15 +28,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/UpdatedCommentResponse'
         '400':
-          description: Validation failed
+          $ref: '#/components/responses/ValidationError'
         '401':
-          description: Unauthorized
+          $ref: '#/components/responses/UnauthorizedError'
         '403':
-          description: Access denied
+          $ref: '#/components/responses/AccessError'
         '404':
-          description: Comment not found
+          $ref: '#/components/responses/NotFoundError'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
     delete:
       tags:
@@ -65,13 +65,13 @@ paths:
                 example:
                   message: Comment deleted successfully
         '401':
-          description: Unauthorized
+          $ref: '#/components/responses/UnauthorizedError'
         '403':
-          description: Access denied
+          $ref: '#/components/responses/AccessError'
         '404':
-          description: Comment not found
+          $ref: '#/components/responses/NotFoundError'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
 components:
   schemas:
@@ -141,8 +141,62 @@ components:
               nullable: true
               example: null
 
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
+  responses:
+    UnauthorizedError:
+      description: Unauthorized (token missing or invalid)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: No token provided
+
+    ValidationError:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: Validation failed
+
+    AccessError:
+      description: Access denied
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: Access denied
+
+    NotFoundError:
+      description: Comment not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: Comment not found
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: Internal server error
