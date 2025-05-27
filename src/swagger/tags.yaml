@@ -13,6 +13,12 @@ paths:
                 $ref: '#/components/schemas/TagsListResponse'
         '500':
           description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: Internal server error
 
 components:
   schemas:
@@ -32,3 +38,11 @@ components:
           example:
             - backend
             - node
+
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string

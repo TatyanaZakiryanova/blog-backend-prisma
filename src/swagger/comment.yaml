@@ -34,7 +34,7 @@ paths:
         '403':
           $ref: '#/components/responses/AccessError'
         '404':
-          $ref: '#/components/responses/NotFoundError'
+          $ref: '#/components/responses/CommentNotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -69,7 +69,7 @@ paths:
         '403':
           $ref: '#/components/responses/AccessError'
         '404':
-          $ref: '#/components/responses/NotFoundError'
+          $ref: '#/components/responses/CommentNotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -183,7 +183,7 @@ components:
           example:
             message: Access denied
 
-    NotFoundError:
+    CommentNotFoundError:
       description: Comment not found
       content:
         application/json:

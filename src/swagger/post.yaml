@@ -41,7 +41,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PostListResponse'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
     post:
       tags:
@@ -63,11 +63,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/PostResponse'
         '400':
-          description: Validation failed
+          $ref: '#/components/responses/ValidationError'
         '401':
-          description: Unauthorized (token missing or invalid)
+          $ref: '#/components/responses/UnauthorizedError'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
   /posts/{id}:
     get:
@@ -90,9 +90,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/PostResponse'
         '404':
-          description: Post not found
+          $ref: '#/components/responses/PostNotFoundError'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
     patch:
       tags:
@@ -122,15 +122,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/PostResponse'
         '400':
-          description: Validation failed
+          $ref: '#/components/responses/ValidationError'
         '401':
-          description: Unauthorized (token missing or invalid)
+          $ref: '#/components/responses/UnauthorizedError'
         '403':
-          description: Access denied
+          $ref: '#/components/responses/AccessError'
         '404':
-          description: Post not found
+          $ref: '#/components/responses/PostNotFoundError'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
     delete:
       tags:
@@ -159,13 +159,13 @@ paths:
                 example:
                   message: Post deleted successfully
         '401':
-          description: Unauthorized (token missing or invalid)
+          $ref: '#/components/responses/UnauthorizedError'
         '403':
-          description: Access denied
+          $ref: '#/components/responses/AccessError'
         '404':
-          description: Post not found
+          $ref: '#/components/responses/PostNotFoundError'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
   /posts/{id}/comments:
     get:
@@ -188,7 +188,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CommentListResponse'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
     post:
       tags:
@@ -218,13 +218,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/CommentResponse'
         '400':
-          description: Validation failed
+          $ref: '#/components/responses/ValidationError'
         '401':
-          description: Unauthorized (token missing or invalid)
+          $ref: '#/components/responses/UnauthorizedError'
         '404':
-          description: Post not found
+          $ref: '#/components/responses/PostNotFoundError'
         '500':
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
 components:
   schemas:
@@ -417,8 +417,62 @@ components:
               nullable: true
               example: null
 
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
+  responses:
+    UnauthorizedError:
+      description: Unauthorized (token missing or invalid)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: No token provided
+
+    ValidationError:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: Validation failed
+
+    AccessError:
+      description: Access denied
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: Access denied
+
+    PostNotFoundError:
+      description: Post not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: Post not found
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: Internal server error
