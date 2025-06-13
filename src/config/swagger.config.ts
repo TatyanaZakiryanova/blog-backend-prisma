@@ -10,7 +10,7 @@ const swaggerConfig: Options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
+        url: 'https://blog-backend-prisma-sv62.onrender.com',
       },
     ],
   },
