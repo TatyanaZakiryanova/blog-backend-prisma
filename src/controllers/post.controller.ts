@@ -34,14 +34,9 @@ export const getAll = async (
   next: NextFunction,
 ) => {
   try {
-    const { sort, tag, page = '1', pageSize = '10' } = req.query;
+    const { sort, tag, page = '1', limit = '10' } = req.query;
 
-    const posts = await postService.getAllPosts(
-      sort,
-      tag,
-      parseInt(page, 10),
-      parseInt(pageSize, 10),
-    );
+    const posts = await postService.getAllPosts(sort, tag, parseInt(page, 10), parseInt(limit, 10));
 
     res.json({ message: 'List of all posts', data: posts });
   } catch (err) {

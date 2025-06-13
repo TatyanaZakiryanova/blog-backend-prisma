@@ -8,5 +8,5 @@ export interface GetAllQuery {
   sort?: 'popular' | 'newest';
   tag?: string;
   page: string;
-  pageSize: string;
+  limit: string;
 }

@@ -9,7 +9,9 @@
     "migrate": "npx prisma migrate dev",
     "generate": "npx prisma generate",
     "studio": "npx prisma studio",
-    "seed": "ts-node src/seed.ts"
+    "seed": "ts-node src/seed.ts",
+    "predeploy": "npm install && npm run build",
+    "deploy": "npm start"
   },
   "keywords": [],
   "author": "",

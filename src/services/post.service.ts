@@ -39,12 +39,7 @@ export const createPost = async (dto: CreatePostDto, userId: number) => {
   return post;
 };
 
-export const getAllPosts = async (
-  sortParam?: string,
-  tagFilter?: string,
-  page = 1,
-  pageSize = 10,
-) => {
+export const getAllPosts = async (sortParam?: string, tagFilter?: string, page = 1, limit = 10) => {
   const sortBy: Prisma.PostOrderByWithRelationInput =
     sortParam === 'popular' ? { viewsCount: 'desc' } : { createdAt: 'desc' };
 
@@ -53,8 +48,8 @@ export const getAllPosts = async (
   const posts = await prisma.post.findMany({
     where,
     orderBy: sortBy,
-    skip: (page - 1) * pageSize,
-    take: pageSize,
+    skip: (page - 1) * limit,
+    take: limit,
     select: {
       id: true,
       title: true,
