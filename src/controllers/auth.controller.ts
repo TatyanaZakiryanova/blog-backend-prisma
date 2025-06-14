@@ -40,14 +40,11 @@ export const login = async (req: Request<{}, {}, LoginDto>, res: Response, next:
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    console.log('Login request body:', req.body);
-
     res.status(200).json({
       message: 'Login successful',
       data: { ...user, accessToken },
     });
   } catch (err) {
-    console.error('LOGIN ERROR:', err);
     next(err);
   }
 };

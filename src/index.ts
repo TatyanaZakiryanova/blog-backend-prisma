@@ -19,7 +19,6 @@ dotenv.config();
 
 const app = express();
 
-console.log('App is starting...');
 const swaggerSpec = swaggerJSDoc(swaggerConfig);
 
 app.use(express.json());
