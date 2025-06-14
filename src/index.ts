@@ -19,6 +19,7 @@ dotenv.config();
 
 const app = express();
 
+console.log('App is starting...');
 const swaggerSpec = swaggerJSDoc(swaggerConfig);
 
 app.use(express.json());
@@ -26,7 +27,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: ['https://blog-backend-prisma-sv62.onrender.com', 'http://localhost:5173'],
     credentials: true,
   }),
 );
