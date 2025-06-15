@@ -26,7 +26,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: 'https://blogaboutit.netlify.app/',
+    origin: 'https://blogaboutit.netlify.app',
     credentials: true,
   }),
 );
