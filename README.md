@@ -1,10 +1,14 @@
 # Blog backend API
 
-A RESTful API for the blog project, built with Express and TypeScript.
+RESTful API for the blog project, built with Express and TypeScript.
+
+[README на русском](./README.ru.md)
 
 [API documentation](https://blog-backend-prisma-sv62.onrender.com/api-docs/)
 
-[Frontend for this API](https://blogaboutit.netlify.app/)
+[Frontend repository for this API](https://github.com/TatyanaZakiryanova/blog-frontend)
+
+[Frontend deployment for this API](https://blogaboutit.netlify.app/)
 
 ## Technologies
 
@@ -30,7 +34,7 @@ A RESTful API for the blog project, built with Express and TypeScript.
 - Strictly typed DTOs
 - Atomic database operations using **Prisma transactions**
 - **CRUD operations** for posts and comments
-- Image upload to Cloudinary
+- Image upload to **Cloudinary**
 - Swagger-based API docs
 
 ## How to start project
@@ -52,5 +56,3 @@ start the server:
 ```bash
 npm start
 ```
-
-Читать на русском: [README.ru.md](./README.ru.md)
