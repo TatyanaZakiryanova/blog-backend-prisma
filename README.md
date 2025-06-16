@@ -8,28 +8,28 @@ A RESTful API for the blog project, built with Express and TypeScript.
 
 ## Technologies
 
-- Node.js + Express
-- TypeScript
-- PostgreSQL (via Prisma ORM)
-- JWT – authentication and authorization
-- bcrypt – password hashing
-- Multer + Cloudinary – image uploading
-- CORS, dotenv – environment configuration
-- Zod – runtime schema validation and DTO enforcement
-- Neon, Render – deployment
-- Swagger – API documentation
+- **Node.js + Express**
+- **TypeScript**
+- **PostgreSQL** (via Prisma ORM)
+- **JWT** – authentication and authorization
+- **bcrypt** – password hashing
+- **Multer + Cloudinary** – image uploading
+- **CORS, dotenv** – environment configuration
+- **Zod** – runtime schema validation and DTO enforcement
+- **Neon, Render** – deployment
+- **Swagger** – API documentation
 
 ## Features
 
-- User authentication and registration using access and refresh tokens
-- httpOnly secure cookies for storing refresh tokens
-- Role-based access control with middleware checks
-- Middleware for route protection (checkAuth, checkRole)
-- Centralized error handling
-- Validation of all incoming data using Zod schemas
+- User authentication and registration using **access and refresh tokens**
+- **httpOnly secure cookies** for storing refresh tokens
+- **Role-based access control** with middleware checks
+- Middleware for **route protection** (checkAuth, checkRole)
+- Centralized error handling (errorHandler)
+- Validation of all incoming data using **Zod schemas**
 - Strictly typed DTOs
-- Atomic database operations using Prisma transactions
-- CRUD operations for posts and comments
+- Atomic database operations using **Prisma transactions**
+- **CRUD operations** for posts and comments
 - Image upload to Cloudinary
 - Swagger-based API docs
 
