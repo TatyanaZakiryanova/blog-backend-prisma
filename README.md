@@ -25,17 +25,21 @@ RESTful API for the blog project, built with Express and TypeScript.
 
 ## Features
 
-- User authentication and registration using **access and refresh tokens**
+- User authentication and registration using **access and refresh tokens**:
+  - access token is stored for 15 minutes
+  - refresh token is stored for 7 days
 - **httpOnly secure cookies** for storing refresh tokens
-- **Role-based access control** with middleware checks
-- Middleware for **route protection** (checkAuth, checkRole)
+- **Role-based access control** with middleware checks. **Admin rights**:
+  - Getting a list of all users with their roles
+  - Deleting any user, post and comment
+- Middleware for **route protection** (checkAuth, checkRole). Unauthorized users cannot write posts and comments
 - Centralized error handling (errorHandler)
 - Validation of all incoming data using **Zod schemas**
 - Strictly typed DTOs
-- Atomic database operations using **Prisma transactions**
+- Atomic database operations using **Prisma transactions** (e.g. deleting a comment and decrementing the post's comment counter)
 - **CRUD operations** for posts and comments
 - Image upload to **Cloudinary**
-- Swagger-based API docs
+- **Swagger-based** API docs
 
 ## How to start project
 
