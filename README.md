@@ -17,7 +17,7 @@ RESTful API for the blog project, built with Express and TypeScript.
 - **PostgreSQL** (via Prisma ORM)
 - **JWT** – authentication and authorization
 - **bcrypt** – password hashing
-- **Multer + Cloudinary** – image uploading
+- **Multer + Cloudinary** – image uploading (images for posts, user avatar)
 - **CORS, dotenv** – environment configuration
 - **Zod** – runtime schema validation and DTO enforcement
 - **Neon, Render** – deployment
@@ -36,9 +36,9 @@ RESTful API for the blog project, built with Express and TypeScript.
 - Centralized error handling (errorHandler)
 - Validation of all incoming data using **Zod schemas**
 - Strictly typed DTOs
-- Atomic database operations using **Prisma transactions** (e.g. deleting a comment and decrementing the post's comment counter)
+- Atomic database operations using **Prisma transactions** (e.g. creating/deleting a comment and incrementing/decrementing the post's comment counter)
 - **CRUD operations** for posts and comments
-- Image upload to **Cloudinary**
+- Image upload to **Cloudinary**: images for posts, user avatar
 - **Swagger-based** API docs
 
 ## How to start project
