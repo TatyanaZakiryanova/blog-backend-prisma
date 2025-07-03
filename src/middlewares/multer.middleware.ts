@@ -8,7 +8,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = new CloudinaryStorage({
+const postImageStorage = new CloudinaryStorage({
   cloudinary,
   params: async () => ({
     folder: 'your-app-images',
@@ -17,4 +17,14 @@ const storage = new CloudinaryStorage({
   }),
 });
 
-export const uploadMiddleware = multer({ storage });
+const avatarStorage = new CloudinaryStorage({
+  cloudinary,
+  params: async () => ({
+    folder: 'avatars',
+    allowed_formats: ['jpg', 'jpeg', 'png'],
+    public_id: `avatar-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+  }),
+});
+
+export const uploadPostImage = multer({ storage: postImageStorage });
+export const uploadAvatarImage = multer({ storage: avatarStorage });
