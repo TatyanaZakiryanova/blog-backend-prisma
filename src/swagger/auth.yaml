@@ -94,6 +94,24 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  /auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: Removing refresh token cookie
+      responses:
+        '200':
+          description: Removing refresh token cookie
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: Successful logout
+
 components:
   schemas:
     LoginInput:

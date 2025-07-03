@@ -82,3 +82,12 @@ export const refreshAccessToken = (req: Request, res: Response, next: NextFuncti
     next(err);
   }
 };
+
+export const logout = (_req: Request, res: Response) => {
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+  });
+  res.json({ message: 'Successful logout' });
+};
