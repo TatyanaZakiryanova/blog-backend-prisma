@@ -39,6 +39,7 @@ RESTful API for the blog project, built with Express and TypeScript.
 - Atomic database operations using **Prisma transactions** (e.g. creating/deleting a comment and incrementing/decrementing the post's comment counter)
 - **CRUD operations** for posts and comments
 - Image upload to **Cloudinary**: images for posts, user avatar
+- **Pagination** for posts
 - **Swagger-based** API docs
 
 ## How to start project

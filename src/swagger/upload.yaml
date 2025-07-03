@@ -35,6 +35,38 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  /upload-avatar:
+    post:
+      summary: Upload user avatar
+      tags:
+        - Upload
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: Image file to upload (e.g., PNG or JPG)
+      responses:
+        '200':
+          description: Avatar successfully uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: https://example.com/uploads/image.jpg
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
 components:
   schemas:
     ErrorResponse:
