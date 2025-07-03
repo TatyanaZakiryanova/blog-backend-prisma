@@ -47,7 +47,7 @@ paths:
             schema:
               type: object
               properties:
-                image:
+                avatar:
                   type: string
                   format: binary
                   description: Image file to upload (e.g., PNG or JPG)
