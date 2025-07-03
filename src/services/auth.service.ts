@@ -6,7 +6,7 @@ import { AppError } from '../utils/AppError';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../utils/jwt';
 
 export const registerUser = async (dto: RegisterDto) => {
-  const { fullName, email, password } = dto;
+  const { fullName, email, password, avatarUrl } = dto;
 
   const existingUser = await prisma.user.findUnique({ where: { email } });
 
@@ -18,7 +18,7 @@ export const registerUser = async (dto: RegisterDto) => {
   const hash = await bcrypt.hash(password, salt);
 
   const user = await prisma.user.create({
-    data: { fullName, email, passwordHash: hash },
+    data: { fullName, email, passwordHash: hash, avatarUrl },
   });
 
   const accessToken = signAccessToken(user.id);
