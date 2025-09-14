@@ -12,6 +12,8 @@
 
 [**Frontend deployment**](https://blog-frontend-rho-bice.vercel.app/)
 
+[**Fullstack video demo**](https://drive.google.com/file/d/1tMDG8Hg6J8eTmqvEbXdh57vQ2nrHLdy3/view)
+
 ## 🛠️ Technologies
 
 - **Node.js + Express**

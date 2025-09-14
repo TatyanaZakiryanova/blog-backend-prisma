@@ -1,6 +1,6 @@
 # Blog backend API
 
-**Production-ready REST API for the fullstack blog built with Express, PostgreSQL, and Prisma ORM.** Implements secure **JWT authentication** (access + refresh tokens in httpOnly cookies), **role-based access control**, and **image uploads**.
+**REST API for the fullstack blog built with Express, PostgreSQL, and Prisma ORM.** Implements secure **JWT authentication** (access + refresh tokens in httpOnly cookies), **role-based access control**, and **image uploads**.
 
 ⚠️ _Please note: free Render server may take up to 1 minute to wake up on first request._
 
@@ -11,6 +11,8 @@
 [**Frontend repository**](https://github.com/TatyanaZakiryanova/blog-frontend)
 
 [**Frontend deployment**](https://blog-frontend-rho-bice.vercel.app/)
+
+[**Fullstack video demo**](https://drive.google.com/file/d/1tMDG8Hg6J8eTmqvEbXdh57vQ2nrHLdy3/view)
 
 [**README на русском**](./README.ru.md)
 
